@@ -1,7 +1,7 @@
 // main.js
 
 // 控制应用生命周期和创建原生浏览器窗口的模组
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain, nativeTheme } = require('electron')
 const path = require('path')
 
 function createWindow () {
@@ -15,16 +15,29 @@ function createWindow () {
   })
 
   // 加载 index.html
-  // mainWindow.loadFile('index.html')
+  mainWindow.loadFile('index.html')
   
   // 加载github
-  mainWindow.loadURL('https://github.com')
+  // mainWindow.loadURL('https://github.com')
 
   // 打开开发工具
   // mainWindow.webContents.openDevTools()
 
-  const contents = mainWindow.webContents
-  console.log(contents)
+  // const contents = mainWindow.webContents
+  // console.log(contents)
+
+  ipcMain.handle('dark-mode:toggle', () => {
+    if (nativeTheme.shouldUseDarkColors) {
+      nativeTheme.themeSource = 'light'
+    } else {
+      nativeTheme.themeSource = 'dark'
+    }
+    return nativeTheme.shouldUseDarkColors
+  })
+
+  ipcMain.handle('dark-mode:system', () => {
+    nativeTheme.themeSource = 'system'
+  })
 }
 
 // 这段程序将会在 Electron 结束初始化

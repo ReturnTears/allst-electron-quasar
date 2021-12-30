@@ -1,6 +1,6 @@
 // preload.js
 
-const { contextBridge } = require('electron')
+const { contextBridge, ipcRenderer } = require('electron')
 
 // 所有Node.js API都可以在预加载过程中使用。
 // 它拥有与Chrome扩展一样的沙盒。
@@ -17,4 +17,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
 contextBridge.exposeInMainWorld('myAPI', {
   desktop: true
+})
+
+contextBridge.exposeInMainWorld('darkMode', {
+  toggle: () => ipcRenderer.invoke('dark-mode:toggle'),
+  system: () => ipcRenderer.invoke('dark-mode:system')
 })
