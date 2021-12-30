@@ -15,10 +15,16 @@ function createWindow () {
   })
 
   // 加载 index.html
-  mainWindow.loadFile('index.html')
+  // mainWindow.loadFile('index.html')
+  
+  // 加载github
+  mainWindow.loadURL('https://github.com')
 
   // 打开开发工具
   // mainWindow.webContents.openDevTools()
+
+  const contents = mainWindow.webContents
+  console.log(contents)
 }
 
 // 这段程序将会在 Electron 结束初始化
