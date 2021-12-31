@@ -1,6 +1,14 @@
+# 环境推荐
+```text
+查看本地node版本： node -v  推荐版本：v14.x.y+
+查看本地npm版本：npm -v     推荐版本：8.x.y+
+查看本地yarn版本：yarn -v   推荐版本：1.22.y+
+
+```
+
 # 官方文档
 ```text
-1、https://www.electronjs.org/zh/docs/latest/tutorial/quick-start#scaffold-the-project
+0、https://www.electronjs.org/zh/docs/latest/tutorial/quick-start#scaffold-the-project
 
 
 1、最快捷的打包方式是使用 Electron Forge, 将 Electron Forge 添加到您应用的开发依赖中，并使用其"import"命令设置 Forge 的脚手架：
@@ -49,7 +57,18 @@ API 文档：https://www.electronjs.org/zh/docs/latest/api/app
 语境隔离（Context Isolation）意味着预加载脚本与渲染器的主要运行环境是隔离开来的，以避免泄漏任何具特权的 API 到您的网页内容代码中。
 取而代之，我们將使用 contextBridge 模块来安全地实现交互：
 
+6、设备访问
+类似基于 Chromium 的浏览器一样, Electron 也提供了通过 web API 访问设备硬件的方法。 
+Electron和浏览器之间的主要区别是请求访问设备时发生的情况。
+在浏览器中，用户可以在弹出窗口中允许访问单独的设备。 
+在 Electron API中，提供了可供开发者自动选择设备或提示用户通过开发者创建的接口选择设备。
 
+6.1、Web Bluetooth API#
+Web Bluetooth API 可以被用来连接蓝牙设备。 
+为了在 Electron 中使用此 API ， 开发者将需要在 webContent 处理 select-bluetooth-device 事件 ，从而与设备请求相关联。
+
+6.2、WebHID API​ #
+WebHID API 可以用于访问HID 设备，例如 键盘和游戏机。 Electron 提供了几个使用 WebHID API的接口
 
 ```
 

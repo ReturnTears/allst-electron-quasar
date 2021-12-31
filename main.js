@@ -1,7 +1,7 @@
 // main.js
 
 // 控制应用生命周期和创建原生浏览器窗口的模组
-const { app, BrowserWindow, ipcMain, nativeTheme } = require('electron')
+const { app, BrowserWindow, ipcMain, nativeTheme, Menu, MenuItem } = require('electron')
 const path = require('path')
 
 function createWindow () {
@@ -12,6 +12,14 @@ function createWindow () {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
+  })
+
+  // devices
+  mainWindow.webContents.on('select-bluetooth-device', (event, deviceList, callback) => {
+    event.preventDefault()
+    if (deviceList && deviceList.length > 0) {
+      callback(deviceList[0].deviceId)
+    } 
   })
 
   // 加载 index.html
@@ -26,6 +34,7 @@ function createWindow () {
   // const contents = mainWindow.webContents
   // console.log(contents)
 
+  // Dark Mode
   ipcMain.handle('dark-mode:toggle', () => {
     if (nativeTheme.shouldUseDarkColors) {
       nativeTheme.themeSource = 'light'
@@ -39,6 +48,18 @@ function createWindow () {
     nativeTheme.themeSource = 'system'
   })
 }
+
+// 菜单
+const menu = new Menu()
+menu.append(new MenuItem({
+  label: '调试快捷键',
+  submenu: [{
+    role: 'help',
+    accelerator: process.platform === 'darwin' ? 'Alt+Cmd+I' : 'Alt+Shift+I',
+    click: () => { console.log('Electron rocks!') }
+  }]
+}))
+Menu.setApplicationMenu(menu)
 
 // 这段程序将会在 Electron 结束初始化
 // 和创建浏览器窗口的时候调用

@@ -5,3 +5,9 @@
 @media (prefers-color-scheme: light) {
     body { background: #ddd; color: black; }
 }
+
+.devices {
+    width: 100%;
+    height: 300px;
+    border: 1px solid grey;
+}

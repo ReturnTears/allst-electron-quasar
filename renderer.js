@@ -10,6 +10,15 @@ document.getElementById('reset-to-system').addEventListener('click', async () =>
     document.getElementById('theme-source').innerHTML = 'System'
 })
 
+// dark mode
+async function testIt() {
+    const device = await navigator.bluetooth.requestDevice({
+      acceptAllDevices: true
+    })
+    document.getElementById('device-name').innerHTML = device.name || `ID: ${device.id}`
+} 
+document.getElementById('clickme').addEventListener('click',testIt)
+
 function payload() {
     console.log('111')
 }
