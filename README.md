@@ -22,6 +22,8 @@ Electron-forge 会创建 out 文件夹，在软件包将在那里可找到
 每个 Electron 应用都有一个单一的主进程，作为应用程序的入口点。 
 主进程在 Node.js 环境中运行，这意味着它具有 require 模块和使用所有 Node.js API 的能力。
 
+在 Electron 里，运行 package.json 里 main 脚本的进程被称为主进程。在主进程运行的脚本可以以创建 web 页面的形式展示 GUI。
+
 窗口管理#
 主进程的主要目的是使用 BrowserWindow 模块创建和管理应用程序窗口。
 BrowserWindow 类的每个实例创建一个应用程序窗口，且在单独的渲染器进程中加载一个网页。 
@@ -44,6 +46,16 @@ API 文档：https://www.electronjs.org/zh/docs/latest/api/app
 所以实际上，运行于渲染器进程中的代码是须遵照网页标准的。
 因此，一个浏览器窗口中的所有的用户界面和应用功能，都应与您在网页开发上使用相同的工具和规范来进行攥写。
 这也意味着渲染器无权直接访问 require 或其他 Node.js API。 为了在渲染器中直接包含 NPM 模块，您必须使用与在 web 开发時相同的打包工具 (例如 webpack 或 parcel)
+
+由于 Electron 使用 Chromium 来展示页面，所以 Chromium 的多进程结构也被充分利用。每个 Electron 的页面都在运行着自己的进程，这样的进程我们称之为渲染进程
+
+主进程与渲染进程的区别
+主进程使用 BrowserWindow 实例创建网页。每个 BrowserWindow 实例都在自己的渲染进程里运行着一个网页。当一个 BrowserWindow 实例被销毁后，相应的渲染进程也会被终止。
+主进程管理所有页面和与之对应的渲染进程。每个渲染进程都是相互独立的，并且只关心他们自己的网页。
+由于在网页里管理原生 GUI 资源是非常危险而且容易造成资源泄露，所以在网页面调用 GUI 相关的 APIs 是不被允许的。如果你想在网页里使用 GUI 操作，其对应的渲染进程必须与主进程进行通讯，请求主进程进行相关的 GUI 操作。
+在 Electron，我们提供用于在主进程与渲染进程之间通讯的 ipc 模块。并且也有一个远程进程调用风格的通讯模块 remote。
+
+连接： https://www.bootwiki/electron/electron-quick-start.html
 
 5、预加载脚本
 预加载（preload）脚本包含了那些执行于渲染器进程中，且先于网页内容开始加载的代码 。 
@@ -70,6 +82,30 @@ Web Bluetooth API 可以被用来连接蓝牙设备。
 6.2、WebHID API​ #
 WebHID API 可以用于访问HID 设备，例如 键盘和游戏机。 Electron 提供了几个使用 WebHID API的接口
 
+```
+
+# 第三方库或组件
+```text
+1.安装colors.js
+npm i colors
+
+2.安装bcrypt
+npm i bcrypt
+若安装bcrypt后运行报错,安装如下插件包解决：
+npm install -g electron-rebuild
+安装成功后重新编译一下： electron-rebuild bcrypt
+
+3.重置代码
+npm run restrt
+
+4.删除依赖项命令：
+npm uninstall xxx
+```
+
+# 项目debugger
+```text
+electron --inspect=8585 .
+chrome://inspect 进行配置localhost:8585
 ```
 
 # Github

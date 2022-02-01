@@ -4,6 +4,16 @@
 const { app, BrowserWindow, ipcMain, nativeTheme, Menu, MenuItem } = require('electron')
 const path = require('path')
 
+// 引入colors
+// const colors = require('colors')
+// console.log(colors.rainbow('Hello World!'))
+
+// 引入bcrypt、todo 有问题待解决
+// const bcrypt = require('bcrypt')
+// bcrypt.hash('myPlaintextPassword', 10, function (err, hash) {
+//   console.log(hash)
+// })
+
 function createWindow () {
   // 创建浏览器窗口
   const mainWindow = new BrowserWindow({
@@ -29,7 +39,7 @@ function createWindow () {
   // mainWindow.loadURL('https://github.com')
 
   // 打开开发工具
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   // const contents = mainWindow.webContents
   // console.log(contents)

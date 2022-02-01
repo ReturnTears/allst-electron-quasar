@@ -16,9 +16,11 @@
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
-    "make": "electron-forge make"
+    "make": "electron-forge make",
+    "reset": "git reset -hard"
   },
   "dependencies": {
+    "colors": "^1.4.0",
     "electron-squirrel-startup": "^1.0.0"
   },
   "config": {
