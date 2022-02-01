@@ -14,15 +14,36 @@ const path = require('path')
 //   console.log(hash)
 // })
 
+// 父子窗口的第二个窗口
+let secondWindow
+
 function createWindow () {
   // 创建浏览器窗口
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
+      nodeIntegration: true,
       preload: path.join(__dirname, 'preload.js')
-    }
+    },
+    // 是否打开窗口
+    // show: false
+    backgroundColor: '#2e2c29'
   })
+
+  const secondWindow = new BrowserWindow({
+    width: 400,
+    height: 200,
+    webPreferences: { nodeIntegration: true },
+    parent: mainWindow,
+    // 模态窗口是禁用父窗口的子窗口
+    modal: true
+  })
+
+  // 配置了show：false， 开启更优雅的打开窗口方式
+  // mainwindow.once('ready-to-show', () => {
+  //   mainwindow.show()
+  // })
 
   // devices
   mainWindow.webContents.on('select-bluetooth-device', (event, deviceList, callback) => {
@@ -34,12 +55,19 @@ function createWindow () {
 
   // 加载 index.html
   mainWindow.loadFile('index.html')
-  
+  secondWindow.loadFile('second.html')
+
   // 加载github
   // mainWindow.loadURL('https://github.com')
 
   // 打开开发工具
   mainWindow.webContents.openDevTools()
+
+  // listen for window be closed
+  mainWindow.on('closed', () => {
+    // app中监听了关闭, 这里置空了mainWindow会导致后面关闭应用时报错
+    // mainWindow = null
+  })
 
   // const contents = mainWindow.webContents
   // console.log(contents)
@@ -72,10 +100,10 @@ menu.append(new MenuItem({
 Menu.setApplicationMenu(menu)
 
 app.on('ready', () => {
-  console.log('App is ready!')
-  console.log(app.getPath('music'))
-  console.log(app.getPath('temp'))
-  console.log(app.getPath('desktop'))
+  // console.log('App is ready!')
+  // console.log(app.getPath('music'))
+  // console.log(app.getPath('temp'))
+  // console.log(app.getPath('desktop'))
 })
 
 // 这段程序将会在 Electron 结束初始化
