@@ -84,6 +84,12 @@ WebHID API 可以用于访问HID 设备，例如 键盘和游戏机。 Electron 
 
 ```
 
+# Electron API
+```text
+官方Api： https://www.electronjs.org/zh/docs/latest/api/app
+
+```
+
 # 第三方库或组件
 ```text
 1.安装colors.js
